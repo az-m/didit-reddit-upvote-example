@@ -1,9 +1,11 @@
 import { CommentForm } from "@/components/CommentForm";
 import { CommentList } from "@/components/CommentList";
+import ModalNotLoggedIn from "@/components/ModalNotLoggedIn";
 import { Vote } from "@/components/Vote";
 import { db } from "@/db";
 
-export default async function SinglePostPage({ params }) {
+export default async function SinglePostPage({ params, searchParams }) {
+  const err = (await searchParams).err;
   const postId = params.postId;
 
   const { rows: posts } = await db.query(
@@ -19,15 +21,19 @@ export default async function SinglePostPage({ params }) {
   );
   const post = posts[0];
 
-  const { rows: votes } = await db.query(
-    `SELECT *, users.name from votes
-     JOIN users on votes.user_id = users.id`
-  );
+  // const { rows: votes } = await db.query(
+  //   `SELECT *, users.name from votes
+  //    JOIN users on votes.user_id = users.id`
+  // );
 
   return (
     <div className="max-w-(--breakpoint-lg) mx-auto pt-4 pr-4">
       <div className="flex space-x-6">
-        <Vote postId={post.id} votes={post.vote_total} />
+        <Vote
+          postId={post.id}
+          votes={post.vote_total}
+          host={`/post/${post.id}`}
+        />
         <div className="">
           <h1 className="text-2xl">{post.title}</h1>
           <p className="text-zinc-400 mb-4">Posted by {post.name}</p>
@@ -37,6 +43,7 @@ export default async function SinglePostPage({ params }) {
 
       <CommentForm postId={post.id} />
       <CommentList postId={post.id} />
+      {err && <ModalNotLoggedIn host={`/post/${post.id}`} />}
     </div>
   );
 }

@@ -4,7 +4,11 @@ import { Vote } from "./Vote";
 import { db } from "@/db";
 import { POSTS_PER_PAGE } from "@/config";
 
-export async function PostList({ currentPage = 1 }) {
+export async function PostList({ currentPage = 1, host }) {
+  if (host === "/page/") {
+    host = host + currentPage;
+  }
+
   const { rows: posts } =
     await db.query(`SELECT posts.id, posts.title, posts.body, posts.created_at, users.name, 
     COALESCE(SUM(votes.vote), 0) AS vote_total
@@ -24,7 +28,7 @@ export async function PostList({ currentPage = 1 }) {
             key={post.id}
             className="py-4 flex space-x-6 hover:bg-zinc-200 rounded-lg dark:hover:text-background"
           >
-            <Vote postId={post.id} votes={post.vote_total} />
+            <Vote postId={post.id} votes={post.vote_total} host={host} />
             <div>
               <Link
                 href={`/post/${post.id}`}

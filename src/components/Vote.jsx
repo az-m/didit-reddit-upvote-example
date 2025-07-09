@@ -2,6 +2,7 @@ import { db } from "@/db";
 import auth from "../app/middleware";
 import { revalidatePath } from "next/cache";
 import { VoteButtons } from "./VoteButtons";
+import { redirect } from "next/navigation";
 
 async function getExistingVote(userId, postId) {
   const { rows: existingVotes } = await db.query(
@@ -12,10 +13,11 @@ async function getExistingVote(userId, postId) {
   return existingVotes?.[0];
 }
 
-async function handleVote(userId, postId, newVote) {
+async function handleVote(userId, postId, host, newVote) {
   // Check if the user has already voted on this post
   if (!userId) {
-    throw new Error("Cannot vote without being logged in");
+    // throw new Error("Cannot vote without being logged in");
+    redirect(`${host}?err=true`);
   }
 
   const existingVote = await getExistingVote(userId, postId);
@@ -39,22 +41,21 @@ async function handleVote(userId, postId, newVote) {
     );
   }
 
-  // revalidatePath("/");
   revalidatePath(`/post/${postId}`);
 }
 
-export async function Vote({ postId, votes }) {
+export async function Vote({ postId, votes, host }) {
   const session = await auth();
   const existingVote = await getExistingVote(session?.user?.id, postId);
 
   async function upvote() {
     "use server";
-    await handleVote(session?.user?.id, postId, 1);
+    await handleVote(session?.user?.id, postId, host, 1);
   }
 
   async function downvote() {
     "use server";
-    await handleVote(session?.user?.id, postId, -1);
+    await handleVote(session?.user?.id, postId, host, -1);
   }
 
   return (
@@ -66,41 +67,6 @@ export async function Vote({ postId, votes }) {
           votes={votes}
           existingVote={existingVote}
         />
-        {/* <button formAction={upvote}>
-          {existingVote?.vote === 1 ? (
-            <TbArrowBigUpFilled
-              size={24}
-              className={clsx("hover:text-orange-600", {
-                "text-pink-300": existingVote?.vote === 1,
-              })}
-            />
-          ) : (
-            <TbArrowBigUp
-              size={24}
-              className={clsx("hover:text-orange-600", {
-                "text-pink-300": existingVote?.vote === 1,
-              })}
-            />
-          )}
-        </button>
-        <span className="w-6 text-center tabular-nums">{votes}</span>
-        <button formAction={downvote}>
-          {existingVote?.vote === -1 ? (
-            <TbArrowBigDownFilled
-              size={24}
-              className={clsx("hover:text-blue-600", {
-                "text-blue-300": existingVote?.vote === -1,
-              })}
-            />
-          ) : (
-            <TbArrowBigDown
-              size={24}
-              className={clsx("hover:text-blue-600", {
-                "text-blue-300": existingVote?.vote === -1,
-              })}
-            />
-          )}
-        </button> */}
       </form>
     </>
   );

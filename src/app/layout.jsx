@@ -23,7 +23,7 @@ export default async function RootLayout({ children }) {
             </Link>
             <Link
               href="/add-post"
-              className="ml-10 hover:bg-zinc-300 p-2 rounded-sm bg-pink-600 text-button hover:text-black"
+              className="ml-10 hover:bg-zinc-300 p-2 rounded-sm bg-button-bg text-button hover:text-black"
             >
               Add post
             </Link>

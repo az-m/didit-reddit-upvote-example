@@ -1,6 +1,5 @@
 import { db } from "@/db";
 import { CommentForm } from "./CommentForm";
-import Image from "next/image";
 
 export async function CommentList({ postId, parentCommentId = null }) {
   const commentQuery = `SELECT comments.id, comments.body, users.name, users.image FROM comments JOIN users ON comments.user_id = users.id WHERE post_id = $1 AND parent_comment_id ${

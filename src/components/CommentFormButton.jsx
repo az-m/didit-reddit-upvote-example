@@ -8,7 +8,7 @@ export function CommentFormButton() {
   return (
     <button
       type="submit"
-      className="bg-pink-600 py-2 px-3 rounded-sm text-button"
+      className="bg-button-bg py-2 px-3 rounded-sm text-button"
       disabled={pending}
     >
       {pending ? "Submitting..." : "Submit"}
