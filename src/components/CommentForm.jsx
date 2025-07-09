@@ -30,7 +30,7 @@ export function CommentForm({ postId, parentCommentId }) {
           <form action={boundDispatch} className="flex flex-col space-y-3">
             <textarea
               name="comment"
-              className="bg-zinc-200 p-3 rounded"
+              className="bg-zinc-200 p-3 rounded-sm"
               placeholder="Type your comment..."
             />
             <CommentFormButton />

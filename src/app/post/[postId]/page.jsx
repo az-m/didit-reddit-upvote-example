@@ -25,7 +25,7 @@ export default async function SinglePostPage({ params }) {
   );
 
   return (
-    <div className="max-w-screen-lg mx-auto pt-4 pr-4">
+    <div className="max-w-(--breakpoint-lg) mx-auto pt-4 pr-4">
       <div className="flex space-x-6">
         <Vote postId={post.id} votes={post.vote_total} />
         <div className="">

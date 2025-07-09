@@ -18,7 +18,7 @@ export async function PostList({ currentPage = 1 }) {
 
   return (
     <>
-      <ul className="max-w-screen-lg mx-auto p-4 mb-4">
+      <ul className="max-w-(--breakpoint-lg) mx-auto p-4 mb-4">
         {posts.map((post) => (
           <li
             key={post.id}
