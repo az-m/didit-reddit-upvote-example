@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
-import { db } from "@/db";
 import { notFound } from "next/navigation";
 import { UserPostList } from "@/components/UserPostList";
+import { UserCommentList } from "@/components/UserCommentList";
 import Link from "next/link";
 
 export default async function Profile({ params, searchParams }) {
@@ -13,7 +13,7 @@ export default async function Profile({ params, searchParams }) {
   }
 
   const query = await searchParams;
-  console.log(query);
+
   let posts, comments;
 
   if (Object.keys(query).length === 0) {
@@ -35,6 +35,7 @@ export default async function Profile({ params, searchParams }) {
         </Link>
       </div>
       {posts && <UserPostList userId={session.user.id} />}
+      {comments && <UserCommentList userId={session.user.id} />}
     </>
   );
 }

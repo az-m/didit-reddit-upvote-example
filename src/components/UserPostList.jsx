@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { Pagination } from "./Pagination";
 import { Vote } from "./Vote";
 import { db } from "@/db";
-import { POSTS_PER_PAGE } from "@/config";
 
-export async function UserPostList({ currentPage = 1, userId }) {
+export async function UserPostList({ userId }) {
   const { rows: posts } = await db.query(
     `SELECT posts.id, posts.title, posts.body, posts.created_at, users.name, 
     COALESCE(SUM(votes.vote), 0) AS vote_total
@@ -13,11 +11,22 @@ export async function UserPostList({ currentPage = 1, userId }) {
      LEFT JOIN votes ON votes.post_id = posts.id
      WHERE users.id = $1
      GROUP BY posts.id, users.name
-     ORDER BY vote_total DESC
-     LIMIT ${POSTS_PER_PAGE}
-     OFFSET ${POSTS_PER_PAGE * (currentPage - 1)}`,
+     ORDER BY created_at DESC`,
     [userId]
   );
+
+  function parseDate(d) {
+    let date = new Date(d);
+    if (d) {
+      const dd = date.getDate();
+      const mm = date.getMonth() + 1;
+      const yyyy = date.getFullYear();
+      date = `${yyyy}-${mm}-${dd}`;
+    } else {
+      date = "";
+    }
+    return date;
+  }
 
   return (
     <>
@@ -36,13 +45,13 @@ export async function UserPostList({ currentPage = 1, userId }) {
                 {post.title}
               </Link>
               <p className="text-zinc-700 dark:text-zinc-400">
-                posted by {post.name}
+                posted by {post.name}{" "}
+                <span className="text-xs">{parseDate(post.created_at)}</span>
               </p>
             </div>
           </li>
         ))}
       </ul>
-      <Pagination currentPage={currentPage} />
     </>
   );
 }
