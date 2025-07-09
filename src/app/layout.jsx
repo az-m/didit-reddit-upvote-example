@@ -17,13 +17,13 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <header className="border-b border-zinc-200 p-4 flex items-center shadow-lg sticky top-0 bg-white bg-opacity-65 backdrop-blur-xs">
+          <header className="border-b border-zinc-200 p-4 flex items-center shadow-lg sticky top-0 bg-foreground bg-opacity-65 backdrop-blur-xs text-background">
             <Link href="/" className="text-xl">
               Didit
             </Link>
             <Link
               href="/add-post"
-              className="ml-10 hover:bg-zinc-300 p-2 rounded-sm bg-pink-300 text-black"
+              className="ml-10 hover:bg-zinc-300 p-2 rounded-sm bg-pink-600 text-button hover:text-black"
             >
               Add post
             </Link>
