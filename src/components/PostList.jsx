@@ -32,7 +32,7 @@ export async function PostList({ currentPage = 1, host }) {
             <div>
               <Link
                 href={`/post/${post.id}`}
-                className="text-3xl hover:text-pink-500"
+                className="text-2xl lg:text-3xl hover:text-pink-500"
               >
                 {post.title}
               </Link>
