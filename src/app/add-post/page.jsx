@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { LoginButton } from "@/components/LoginButton";
-import { LogoutButton } from "@/components/LogoutButton";
+import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
@@ -36,7 +36,12 @@ export default async function Home() {
 
   return (
     <div className="max-w-(--breakpoint-lg) mx-auto p-4 bg-zinc-800 dark:border dark:border-zinc-300 mt-10 rounded-xl text-foreground-on-dark">
-      <h2 className="text-3xl mb-4">Add a new post</h2>
+      <div className="grid grid-cols-2">
+        <h2 className="text-3xl mb-4">Add a new post</h2>
+        <Link href="/" className="justify-self-end font-bold">
+          X
+        </Link>
+      </div>
       <form action={savePost} className="flex flex-col space-y-4">
         <input
           type="text"
