@@ -27,3 +27,5 @@ and the stretch goals:
 
 - Handle the error when you click to vote while not logged in to show a nice error message
 - Future features: User profiles
+
+ETA: I wanted to know how to do nested comments and thought it would work something like this, so I will be taking this handy example with thanks.
